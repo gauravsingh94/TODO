@@ -33,7 +33,7 @@ const NavBar = () => {
   const NavLinks: NavLinksTypes[] = [
     {
       name: "List Todo",
-      link: "/list-todo",
+      link: "/tasks",
     },
 
     {
