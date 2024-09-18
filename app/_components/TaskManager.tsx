@@ -173,7 +173,7 @@ export default function TaskManager() {
               <Plus className="mr-2 h-4 w-4" /> Add Task
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
+          <DialogContent className="sm:max-w-[425px] bg-white text-black">
             <DialogHeader>
               <DialogTitle>
                 {editingTask ? "Edit Task" : "Add Task"}

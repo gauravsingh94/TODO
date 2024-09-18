@@ -27,7 +27,7 @@ function TaskForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4 text-black">
       <div>
         <Label htmlFor="title">Title</Label>
         <Input
