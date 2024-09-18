@@ -31,20 +31,20 @@ interface NavLinksTypes {
 const NavBar = () => {
   const NavLinks: NavLinksTypes[] = [
     {
-      name: "home",
-      link: "/home",
+      name: "List Todo",
+      link: "/list-todo",
     },
 
     {
-      name: "room",
-      link: "/room",
+      name: "Kanban View",
+      link: "/kanban",
     },
   ];
   return (
-    <nav className="flex justify-between px-8 py-2 border-b border-[#27272A] items-center">
+    <nav className="fixed w-full flex justify-between bg-black px-8 py-2 border-b border-[#27272A] items-center">
       <div className="flex items-center gap-2">
         <Image src={LogoSvg} alt="Logo" height={26} />
-        <p className="font-bold">Anonymous Chat</p>
+        <p className="font-bold">Todo</p>
       </div>
       {/*Nav Links */}
       <div className="hidden md:block">

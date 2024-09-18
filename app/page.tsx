@@ -1,10 +1,8 @@
-import Image from "next/image";
-import NavBar from "./_components/NavBar";
-
+import HomeDescription from "./_components/HomeDescription";
 export default function Home() {
   return (
-    <>
-      <NavBar />
-    </>
+    <div className="h-screen flex items-center justify-center">
+      <HomeDescription />
+    </div>
   );
 }
