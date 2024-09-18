@@ -14,12 +14,17 @@ import LogoSvg from "@/public/assets/Logo.svg";
 import ProfileSvg from "@/public/assets/Profile.svg";
 import Image from "next/image";
 import Link from "next/link";
-
+import { useRouter } from "next/navigation";
 interface NavLinksTypes {
   name: string;
   link: string;
 }
 const NavBar = () => {
+  const router = useRouter();
+
+  const handleNavigateHome = () => {
+    router.push("/");
+  };
   const NavLinks: NavLinksTypes[] = [
     {
       name: "List Todo",
@@ -31,9 +36,10 @@ const NavBar = () => {
       link: "/kanban",
     },
   ];
+
   return (
     <nav className="fixed w-full flex justify-between bg-black px-8 py-2 border-b border-[#27272A] items-center">
-      <button className="flex items-center gap-2">
+      <button className="flex items-center gap-2" onClick={handleNavigateHome}>
         <Image src={LogoSvg} alt="Logo" height={26} />
         <p className="font-bold">Todo</p>
       </button>
