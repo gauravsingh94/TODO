@@ -1,21 +1,16 @@
-"use client";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Spinner from "./Spinner";
 
-export default function AuthForm() {
-  const [isLogin, setIsLogin] = useState(true);
+export default function AuthForm({
+  isLogin,
+  setIsLogin,
+}: {
+  isLogin: boolean;
+  setIsLogin: (isLogin: boolean) => void;
+}) {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -28,76 +23,87 @@ export default function AuthForm() {
   };
 
   return (
-    <div className="flex items-center justify-center  px-4">
-      <Card className="w-full max-w-md bg-white text-black shadow-lg">
-        <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-2xl font-bold tracking-tight">
-            {isLogin ? "Login" : "Sign up"}
-          </CardTitle>
-          <CardDescription className="text-gray-500">
-            {isLogin
-              ? "Enter your email to sign in to your account"
-              : "Enter your information to create an account"}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {!isLogin && (
-              <div className="grid gap-2">
-                <div className="grid gap-1">
-                  <Label htmlFor="first-name">First name</Label>
-                  <Input id="first-name" placeholder="John" required />
-                </div>
-                <div className="grid gap-1">
-                  <Label htmlFor="last-name">Last name</Label>
-                  <Input id="last-name" placeholder="Doe" required />
-                </div>
-              </div>
-            )}
-            <div className="grid gap-2">
-              <div className="grid gap-1">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                />
-              </div>
-              <div className="grid gap-1">
-                <Label htmlFor="password">Password</Label>
-                <Input id="password" type="password" required />
-              </div>
-              {!isLogin && (
-                <div className="grid gap-1">
-                  <Label htmlFor="confirm-password">Confirm Password</Label>
-                  <Input id="confirm-password" type="password" required />
-                </div>
-              )}
+    <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
+      <div className="mb-4 ">
+        <h2 className="text-2xl font-bold">{isLogin ? "Login" : "Signup"}</h2>
+        <p className="text-sm text-gray-600">
+          {isLogin
+            ? "Enter your email and password to sign in"
+            : "Fill out the form below to create your account"}
+        </p>
+      </div>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {!isLogin && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="first-name">First Name</Label>
+              <Input
+                id="first-name"
+                placeholder="John"
+                required
+                className="mt-1"
+              />
             </div>
-            <Button
-              className="w-full mt-4 bg-black text-white hover:bg-gray-800 flex items-center justify-center"
-              type="submit"
-              disabled={isLoading}
-            >
-              {isLoading && <Spinner />}
-              {isLogin ? "Sign In" : "Sign Up"}
-            </Button>
-          </form>
-        </CardContent>
-        <CardFooter className="text-center">
-          <div className="text-sm text-gray-500">
-            {isLogin ? "Don't have an account? " : "Already have an account? "}
-            <Button
-              variant="link"
-              className="p-0 text-black font-semibold hover:underline"
-              onClick={() => setIsLogin(!isLogin)}
-            >
-              {isLogin ? "Sign up" : "Log in"}
-            </Button>
+            <div>
+              <Label htmlFor="last-name">Last Name</Label>
+              <Input
+                id="last-name"
+                placeholder="Doe"
+                required
+                className="mt-1"
+              />
+            </div>
           </div>
-        </CardFooter>
-      </Card>
+        )}
+
+        <div>
+          <Label htmlFor="email">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            placeholder="m@example.com"
+            required
+            className="mt-1"
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="password">Password</Label>
+          <Input id="password" type="password" required className="mt-1" />
+        </div>
+
+        {!isLogin && (
+          <div>
+            <Label htmlFor="confirm-password">Confirm Password</Label>
+            <Input
+              id="confirm-password"
+              type="password"
+              required
+              className="mt-1"
+            />
+          </div>
+        )}
+
+        <Button
+          className="w-full mt-4 bg-black text-white hover:bg-gray-800 flex items-center justify-center"
+          type="submit"
+          disabled={isLoading}
+        >
+          {isLoading && <Spinner />}
+          {isLogin ? "Sign In" : "Sign Up"}
+        </Button>
+      </form>
+
+      <div className="mt-4 text-center text-sm text-gray-600">
+        {isLogin ? "Don't have an account? " : "Already have an account? "}
+        <Button
+          variant="link"
+          className="text-black font-semibold hover:underline p-0"
+          onClick={() => setIsLogin(!isLogin)}
+        >
+          {isLogin ? "Sign up" : "Log in"}
+        </Button>
+      </div>
     </div>
   );
 }

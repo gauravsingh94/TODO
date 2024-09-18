@@ -2,28 +2,18 @@
 import {
   NavigationMenu,
   NavigationMenuContent,
-  NavigationMenuIndicator,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-  NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
-import Link from "next/link";
-import Image from "next/image";
-import LogoSvg from "@/public/assets/Logo.svg";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import HamBurgerSvg from "@/public/assets/HamBurger.svg";
+import LogoSvg from "@/public/assets/Logo.svg";
 import ProfileSvg from "@/public/assets/Profile.svg";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import Link from "next/link";
 
 interface NavLinksTypes {
   name: string;
@@ -43,10 +33,10 @@ const NavBar = () => {
   ];
   return (
     <nav className="fixed w-full flex justify-between bg-black px-8 py-2 border-b border-[#27272A] items-center">
-      <div className="flex items-center gap-2">
+      <button className="flex items-center gap-2">
         <Image src={LogoSvg} alt="Logo" height={26} />
         <p className="font-bold">Todo</p>
-      </div>
+      </button>
       {/*Nav Links */}
       <div className="hidden md:block">
         <NavigationMenu>
