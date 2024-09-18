@@ -133,3 +133,40 @@ body {
 .scale-up {
     animation: scaleUp 0.5s ease-out;
 }
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spinner {
+    @apply border-4 border-t-transparent border-white border-solid rounded-full w-6 h-6;
+    animation: spin 1s linear infinite;
+}
+
+.modal-enter {
+    opacity: 0;
+    transform: scale(0.9);
+}
+
+.modal-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    transition:
+        opacity 300ms,
+        transform 300ms;
+}
+
+.modal-exit {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.modal-exit-active {
+    opacity: 0;
+    transform: scale(0.9);
+    transition:
+        opacity 300ms,
+        transform 300ms;
+}

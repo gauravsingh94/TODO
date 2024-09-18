@@ -3,7 +3,7 @@ import HomePageSvg from "@/public/assets/HomePage.svg";
 import SendSvg from "@/public/assets/Sent.svg";
 import { Button } from "@/components/ui/button";
 
-const HomeDescription = () => {
+const HomeDescription = ({ openModel }: { openModel: () => void }) => {
   return (
     <div className="flex flex-col items-center justify-center text-center w-[300px] md:w-[800px]">
       <div className="fade-in slide-in">
@@ -16,7 +16,11 @@ const HomeDescription = () => {
         in one place.
       </h1>
       <div className="mt-8 scale-up">
-        <Button variant="secondary" className="gap-2 font-bold">
+        <Button
+          variant="secondary"
+          className="gap-2 font-bold"
+          onClick={openModel}
+        >
           Start Using
           <Image src={SendSvg} alt="Start using SVG" width={20} height={20} />
         </Button>

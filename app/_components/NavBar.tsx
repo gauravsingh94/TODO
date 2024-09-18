@@ -14,6 +14,7 @@ import Link from "next/link";
 import Image from "next/image";
 import LogoSvg from "@/public/assets/Logo.svg";
 import HamBurgerSvg from "@/public/assets/HamBurger.svg";
+import ProfileSvg from "@/public/assets/Profile.svg";
 import {
   Sheet,
   SheetContent,
@@ -62,7 +63,9 @@ const NavBar = () => {
 
             <NavigationMenuItem>
               <NavigationMenuTrigger className="">
-                <div className="h-7 w-7 rounded-full bg-gray-300"></div>
+                <div className="h-7 w-7 rounded-full bg-black">
+                  <Image src={ProfileSvg} alt="Profile Svg" />
+                </div>
               </NavigationMenuTrigger>
               <NavigationMenuContent className="w-48 p-2 bg-black  border-b border-[#27272A] text-white rounded-md shadow-lg ">
                 <ul className="space-y-2">
