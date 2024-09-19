@@ -1,18 +1,11 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Task } from "./TaskManager";
+import { Task } from "../tasks";
 import { Button } from "@/components/ui/button";
 import { Edit, Trash } from "lucide-react";
 import { format } from "date-fns";
+import { useDrag } from "react-dnd";
 
-function TaskCard({
-  task,
-  onEdit,
-  onDelete,
-}: {
-  task: Task;
-  onEdit: (task: Task) => void;
-  onDelete: (id: number) => void;
-}) {
+function KanbanCard({ task, columnId }: { task: Task; columnId: string }) {
   const statusColors = {
     "To Do": "bg-yellow-400",
     "In Progress": "bg-blue-600",
@@ -25,25 +18,26 @@ function TaskCard({
     High: "bg-red-600",
   };
 
+  const [{ isDragging }, drag] = useDrag({
+    type: "TASK",
+    item: { id: task.id, sourceColumnId: columnId },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
   return (
-    <Card className="border-2 border-[#27272A]">
+    <Card
+      ref={drag}
+      className={`border-2 border-[#27272A] ${
+        isDragging ? "opacity-50" : "opacity-100"
+      }`}
+    >
       <CardContent className="p-4 bg-[#1C1C1C] text-white ">
         <div className="flex justify-between items-start">
           <div>
             <h3 className="text-lg font-semibold">{task.title}</h3>
             <p className="text-sm text-gray-300">{task.description}</p>
-          </div>
-          <div className="flex space-x-2 ">
-            <Button variant="outline" size="icon" onClick={() => onEdit(task)}>
-              <Edit className="h-3 w-3 md:h-4 md:w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => onDelete(task.id)}
-            >
-              <Trash className="h-3 w-3 md:h-4 md:w-4" />
-            </Button>
           </div>
         </div>
         <div className="mt-2 flex flex-wrap gap-2">
@@ -67,4 +61,5 @@ function TaskCard({
     </Card>
   );
 }
-export default TaskCard;
+
+export default KanbanCard;
