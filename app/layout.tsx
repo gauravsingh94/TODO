@@ -1,3 +1,4 @@
+import { Toaster } from "react-hot-toast";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import NavBar from "./_components/NavBar";
@@ -30,6 +31,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <NavBar />
+        <Toaster />
         {children}
       </body>
     </html>
