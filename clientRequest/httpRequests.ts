@@ -36,7 +36,7 @@ export const getTodoById = async (id: string) => {
 // Create todo
 export const createTodo = async (data: {
   title: string;
-  description: string;
+  description?: string;
   status: string;
   priority: string;
   dueDate: string;
@@ -67,6 +67,7 @@ export const updateTodo = async (
   },
 ) => {
   const token = localStorage.getItem("token");
+  console.log(`${API_URL}/tasks/${id}`);
   return await axios.put(`${API_URL}/tasks/${id}`, data, {
     headers: { Authorization: `Bearer ${token}` },
   });

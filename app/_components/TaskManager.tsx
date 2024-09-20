@@ -17,10 +17,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Plus, Search } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import TaskCard from "../_components/TaskCard";
 import TaskForm from "../_components/TaskForm";
-
+import {
+  getAllTodos,
+  createTodo,
+  updateTodo,
+  deleteTodo,
+} from "@/clientRequest/httpRequests"; // Import your backend task functions
+import toast from "react-hot-toast";
 export type Task = {
   id: number;
   title: string;
@@ -30,35 +36,8 @@ export type Task = {
   dueDate: string;
 };
 
-const initialTasks: Task[] = [
-  {
-    id: 1,
-    title: "Complete project proposal",
-    description: "Draft and submit the project proposal",
-    status: "To Do",
-    priority: "High",
-    dueDate: "2023-06-30",
-  },
-  {
-    id: 2,
-    title: "Review code",
-    description: "Perform code review for the latest pull request",
-    status: "In Progress",
-    priority: "Medium",
-    dueDate: "2023-06-25",
-  },
-  {
-    id: 3,
-    title: "Update documentation",
-    description: "Update the user guide with new features",
-    status: "Completed",
-    priority: "Low",
-    dueDate: "2023-06-20",
-  },
-];
-
 export default function TaskManager() {
-  const [tasks, setTasks] = useState<Task[]>(initialTasks);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -68,25 +47,53 @@ export default function TaskManager() {
   const [priorityFilter, setPriorityFilter] = useState<
     Task["priority"] | "All"
   >("All");
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const response = await getAllTodos();
+        setTasks(response.data);
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      }
+    };
+    fetchTasks();
+  }, []);
 
-  const handleAddOrUpdateTask = (task: Omit<Task, "id">) => {
-    if (editingTask) {
-      setTasks(
-        tasks.map((t) =>
-          t.id === editingTask.id ? { ...task, id: editingTask.id } : t,
-        ),
-      );
-    } else {
-      setTasks([...tasks, { ...task, id: Date.now() }]);
+  const handleAddOrUpdateTask = async (task: Omit<Task, "_id">) => {
+    // @ts-ignore
+    const id = editingTask?._id; // Safely access _id
+    try {
+      if (id) {
+        // Update existing task
+        await updateTodo(id.toString(), task);
+        // @ts-ignore
+        setTasks(tasks.map((t) => (t._id === id ? { ...task, _id: id } : t)));
+        toast.success("Todo Updated Successfully.");
+      } else {
+        // Create new task
+        const response = await createTodo(task);
+        setTasks([...tasks, { ...response.data }]);
+        toast.success("Todo Created Successfully.");
+      }
+      setEditingTask(null);
+      setIsDialogOpen(false);
+    } catch (error) {
+      console.error("Error updating or creating task:", error);
+      toast.error("Error updating or creating task:");
     }
-    setEditingTask(null);
-    setIsDialogOpen(false);
   };
-
-  const handleDeleteTask = (id: number) => {
-    setTasks(tasks.filter((task) => task.id !== id));
+  const handleDeleteTask = async (id: string) => {
+    try {
+      console.log(id);
+      await deleteTodo(id);
+      // @ts-ignore
+      setTasks(tasks.filter((task) => task._id !== id)); // Change `task.id` to `task._id`
+      toast.success("Todo deleted successfully.");
+    } catch (error) {
+      console.error("Error deleting task:", error);
+      toast.error("Error deleting task");
+    }
   };
-
   const handleEditTask = (task: Task) => {
     setEditingTask(task);
     setIsDialogOpen(true);
@@ -197,10 +204,10 @@ export default function TaskManager() {
       <div className="grid gap-4 mt-8">
         {filteredAndSortedTasks.map((task) => (
           <TaskCard
-            key={task.id}
             task={task}
             onEdit={handleEditTask}
-            onDelete={handleDeleteTask}
+            // @ts-ignore
+            onDelete={() => handleDeleteTask(task._id)}
           />
         ))}
       </div>

@@ -3,6 +3,7 @@ import { Task } from "./TaskManager";
 import { Button } from "@/components/ui/button";
 import { Edit, Trash } from "lucide-react";
 import { format } from "date-fns";
+import { log } from "console";
 
 function TaskCard({
   task,
@@ -24,7 +25,6 @@ function TaskCard({
     Medium: "bg-yellow-600",
     High: "bg-red-600",
   };
-
   return (
     <Card className="border-2 border-[#27272A]">
       <CardContent className="p-4 bg-[#1C1C1C] text-white ">

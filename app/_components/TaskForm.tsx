@@ -42,6 +42,7 @@ function TaskForm({
         <Textarea
           id="description"
           value={task.description}
+          required
           onChange={(e) => setTask({ ...task, description: e.target.value })}
         />
       </div>

@@ -40,7 +40,8 @@ export async function POST(request: Request) {
 
     const user = await User.findById(userId).populate("tasks").exec();
     const body = await request.json();
-
+    console.log(body);
+    console.log();
     const newTask = new Tasks({
       ...body,
     });
@@ -53,6 +54,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(savedTask, { status: 201 });
   } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { error: "Failed to create task" },
       { status: 500 },
