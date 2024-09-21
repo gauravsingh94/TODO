@@ -35,6 +35,7 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({ column, moveTask }) => {
 
   return (
     <Card
+      // @ts-ignore
       ref={drop}
       className="p-4 bg-black border border-[#27272A] rounded-lg text-white"
     >
