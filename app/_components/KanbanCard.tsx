@@ -1,10 +1,15 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Task } from "../tasks";
-import { Button } from "@/components/ui/button";
-import { Edit, Trash } from "lucide-react";
 import { format } from "date-fns";
 import { useDrag } from "react-dnd";
 
+export type Task = {
+  _id: number;
+  title: string;
+  description: string;
+  status: "To Do" | "In Progress" | "Completed";
+  priority: "Low" | "Medium" | "High";
+  dueDate: string;
+};
 function KanbanCard({ task, columnId }: { task: Task; columnId: string }) {
   const statusColors = {
     "To Do": "bg-yellow-400",
@@ -20,7 +25,7 @@ function KanbanCard({ task, columnId }: { task: Task; columnId: string }) {
 
   const [{ isDragging }, drag] = useDrag({
     type: "TASK",
-    item: { id: task.id, sourceColumnId: columnId },
+    item: { _id: task._id, sourceColumnId: columnId }, // Use _id instead of id
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),

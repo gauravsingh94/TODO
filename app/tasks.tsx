@@ -20,35 +20,8 @@ export type Task = {
   dueDate: string;
 };
 
-const initialTasks: Task[] = [
-  {
-    id: 1,
-    title: "Complete project proposal",
-    description: "Draft and submit the project proposal",
-    status: "To Do",
-    priority: "High",
-    dueDate: "2023-06-30",
-  },
-  {
-    id: 2,
-    title: "Review code",
-    description: "Perform code review for the latest pull request",
-    status: "In Progress",
-    priority: "Medium",
-    dueDate: "2023-06-25",
-  },
-  {
-    id: 3,
-    title: "Update documentation",
-    description: "Update the user guide with new features",
-    status: "Completed",
-    priority: "Low",
-    dueDate: "2023-06-20",
-  },
-];
-
 export default function TaskManager() {
-  const [tasks, setTasks] = useState<Task[]>(initialTasks);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 

@@ -1,8 +1,15 @@
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { useDrop } from "react-dnd";
-import { Task } from "../tasks";
 import KanbanCard from "./KanbanCard";
 
+export type Task = {
+  _id: number;
+  title: string;
+  description: string;
+  status: "To Do" | "In Progress" | "Completed";
+  priority: "Low" | "Medium" | "High";
+  dueDate: string;
+};
 type KanbanColumnProps = {
   column: {
     id: string;
@@ -10,7 +17,7 @@ type KanbanColumnProps = {
     tasks: Task[];
   };
   moveTask: (
-    taskId: number,
+    taskId: string, // Use string type for MongoDB _id
     sourceColumnId: string,
     targetColumnId: string,
   ) => void;
@@ -19,9 +26,9 @@ type KanbanColumnProps = {
 const KanbanColumn: React.FC<KanbanColumnProps> = ({ column, moveTask }) => {
   const [, drop] = useDrop({
     accept: "TASK",
-    drop: (item: { id: number; sourceColumnId: string }) => {
+    drop: (item: { _id: string; sourceColumnId: string }) => {
       if (item.sourceColumnId !== column.id) {
-        moveTask(item.id, item.sourceColumnId, column.id);
+        moveTask(item._id, item.sourceColumnId, column.id); // Use _id instead of id
       }
     },
   });
@@ -35,8 +42,10 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({ column, moveTask }) => {
         <CardTitle>{column.title}</CardTitle>
       </CardHeader>
       {column.tasks.map((task) => (
-        <div className="mb-4">
-          <KanbanCard key={task.id} task={task} columnId={column.id} />
+        <div key={task._id} className="mb-4">
+          {" "}
+          {/* Use _id as key */}
+          <KanbanCard task={task} columnId={column.id} />
         </div>
       ))}
     </Card>

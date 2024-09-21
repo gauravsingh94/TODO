@@ -1,9 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import KanbanColumn from "./KanbanColumn";
 import { Task } from "../tasks";
+import { getAllTodos, updateTodo } from "@/clientRequest/httpRequests"; // Make sure to import your API methods
 
 type Column = {
   id: string;
@@ -11,75 +12,80 @@ type Column = {
   tasks: Task[];
 };
 
-const initialTasks: Task[] = [
-  {
-    id: 1,
-    title: "Complete project proposal",
-    description: "Draft and submit the project proposal",
-    status: "To Do",
-    priority: "High",
-    dueDate: "2023-06-30",
-  },
-  {
-    id: 2,
-    title: "Review code",
-    description: "Perform code review for the latest pull request",
-    status: "In Progress",
-    priority: "Medium",
-    dueDate: "2023-06-25",
-  },
-  {
-    id: 3,
-    title: "Update documentation",
-    description: "Update the user guide with new features",
-    status: "Completed",
-    priority: "Low",
-    dueDate: "2023-06-20",
-  },
-];
-
 const KanbanBoard: React.FC = () => {
   const [columns, setColumns] = useState<Column[]>([
     {
       id: "To Do",
       title: "To Do",
-      tasks: initialTasks.filter((task) => task.status === "To Do"),
+      tasks: [],
     },
     {
       id: "In Progress",
       title: "In Progress",
-      tasks: initialTasks.filter((task) => task.status === "In Progress"),
+      tasks: [],
     },
     {
       id: "Completed",
       title: "Completed",
-      tasks: initialTasks.filter((task) => task.status === "Completed"),
+      tasks: [],
     },
   ]);
 
-  const moveTask = (
-    taskId: number,
+  // Fetch tasks from the backend on component mount
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const response = await getAllTodos();
+        const tasks = response.data;
+
+        setColumns((prevColumns) =>
+          prevColumns.map((column) => ({
+            ...column,
+            tasks: tasks.filter((task: Task) => task.status === column.id),
+          })),
+        );
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      }
+    };
+
+    fetchTasks();
+  }, []);
+
+  const moveTask = async (
+    taskId: string, // _id is a string in MongoDB
     sourceColumnId: string,
     targetColumnId: string,
   ) => {
     const sourceColumn = columns.find((col) => col.id === sourceColumnId)!;
     const targetColumn = columns.find((col) => col.id === targetColumnId)!;
-    const task = sourceColumn.tasks.find((task) => task.id === taskId)!;
+    const task = sourceColumn.tasks.find((task) => task._id === taskId)!;
 
-    setColumns((prevColumns) =>
-      prevColumns.map((col) => {
-        if (col.id === sourceColumnId) {
-          return {
-            ...col,
-            tasks: col.tasks.filter((task) => task.id !== taskId),
-          };
-        }
-        if (col.id === targetColumnId) {
-          return { ...col, tasks: [...col.tasks, task] };
-        }
-        return col;
-      }),
-    );
+    // Update the task's status in the backend
+    try {
+      await updateTodo(taskId, { ...task, status: targetColumnId });
+
+      // Update the tasks locally after successful backend update
+      setColumns((prevColumns) =>
+        prevColumns.map((col) => {
+          if (col.id === sourceColumnId) {
+            return {
+              ...col,
+              tasks: col.tasks.filter((task) => task._id !== taskId),
+            };
+          }
+          if (col.id === targetColumnId) {
+            return {
+              ...col,
+              tasks: [...col.tasks, { ...task, status: targetColumnId }],
+            };
+          }
+          return col;
+        }),
+      );
+    } catch (error) {
+      console.error("Error updating task status:", error);
+    }
   };
 
   return (
