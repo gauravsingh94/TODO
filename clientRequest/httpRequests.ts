@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api";
+const API_URL = `${process.env.BACKEND_URL}`;
 
 // Sign up
 export const signUp = async (data: {
