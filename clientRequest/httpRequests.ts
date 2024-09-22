@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = `https://todo-wheat-two.vercel.app`;
+const API_URL = `https://todo-bay-eight-36.vercel.app`;
 
 // Sign up
 export const signUp = async (data: {
