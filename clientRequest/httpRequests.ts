@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = `${process.env.BACKEND_URL}`;
+const API_URL = `https://todo-wheat-two.vercel.app`;
 
 // Sign up
 export const signUp = async (data: {
