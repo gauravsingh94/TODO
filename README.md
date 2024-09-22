@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Todo Application
 
-## Getting Started
+A full-featured Todo application that allows users to manage their tasks with basic CRUD (Create, Read, Update, Delete) operations. It also includes advanced features like search filters and a Kanban board view to organize tasks.
 
-First, run the development server:
+## Features
 
+- **Create Todos**: Add new tasks with a title, description, priority, and due date.
+- **Read Todos**: View your list of todos in a simple list view or in a Kanban board format.
+- **Update Todos**: Edit task details, such as the title, description, priority, and status.
+- **Delete Todos**: Remove tasks that are no longer needed.
+- **Search Filter**: Quickly filter tasks based on task titles or other relevant fields.
+- **Kanban View**: Visualize your tasks in different columns based on their status (To Do, In Progress, Completed).
+
+## Tech Stack
+
+- **Frontend**:
+  - React (Next.js)
+  - TypeScript
+  - Tailwind CSS
+
+- **Backend**:
+  - Node.js
+  - Express.js
+  - MongoDB (Mongoose for ORM)
+
+- **Drag and Drop**: Integrated drag-and-drop functionality to move tasks between columns in Kanban view.
+
+## Setup Instructions
+
+### 1. Clone the Repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/gauravsingh94/TODO.git
+cd todo-app
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install Dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Environment Variables
+Create a `.env.local` file at the root of your project and add the following environment variables:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+MONGODB_URI=mongodb://127.0.0.1:27017/test
+JWT_SECRET=your_jwt_secret_key
+BACKEND_URL=localhost:3000/api
+```
 
-## Learn More
+### 4. Running the Application
 
-To learn more about Next.js, take a look at the following resources:
+To run the application locally:
+```bash
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 5. Build for Production
+```bash
+npm run build
+npm run start
+```
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Kanban View
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The Kanban view organizes todos into three columns:
+- **To Do**: Tasks that are yet to be started.
+- **In Progress**: Tasks that are being worked on.
+- **Completed**: Finished tasks.
+
+Drag and drop tasks between columns to update their status.
+
+## Search Filter
+
+The search feature allows you to filter todos by entering keywords into the search bar. It will match the task title and description.
