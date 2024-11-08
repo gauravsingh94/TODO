@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "../../_connectDb/mongodb";
 import Tasks from "../../_models/Tasks";
 import { isAuthenticated } from "../../_jwt/jwt";
@@ -77,4 +77,10 @@ export async function DELETE(request: Request) {
       { status: 400 },
     );
   }
+}
+
+export const OPTIONS = async (request: NextRequest) => {
+  return new NextResponse('', {
+    status: 200
+  })
 }

@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "../../_connectDb/mongodb";
 import User from "../../_models/User";
 import bcrypt from "bcryptjs";
@@ -11,23 +11,22 @@ export async function POST(req: Request) {
 
   try {
     await dbConnect();
-
     const existingUser = await User.findOne({ email });
     if (!existingUser) {
       return NextResponse.json(
-        { success: false, message: "Invalid email or password" },
-        { status: 400 },
+        { success: false, message: "Incorrect Email" },
+        { status: 400 }
       );
     }
 
     const isPasswordCorrect = await bcrypt.compare(
       password,
-      existingUser.password,
+      existingUser.password
     );
     if (!isPasswordCorrect) {
       return NextResponse.json(
-        { success: false, message: "Invalid email or password" },
-        { status: 400 },
+        { success: false, message: "Incorrect password" },
+        { status: 400 }
       );
     }
 
@@ -35,13 +34,18 @@ export async function POST(req: Request) {
       expiresIn: "1h",
     });
 
-    // Return the token and success message
     return NextResponse.json({ success: true, token }, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
       { success: false, message: "Server error" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
+
+export const OPTIONS = async (request: NextRequest) => {
+  return new NextResponse("", {
+    status: 200,
+  });
+};

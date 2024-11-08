@@ -63,8 +63,11 @@ export default function AuthForm({
       }
     } catch (error) {
       console.error("Error:", error);
-      toast.error("Unauthorized.");
-      // Handle error here
+      // @ts-ignore
+      if (error && error.response && error.response.data.message) {
+        // @ts-ignore
+        toast.error(error.response.data.message);
+      }
     } finally {
       setIsLoading(false);
     }
