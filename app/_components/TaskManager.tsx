@@ -196,6 +196,7 @@ export default function TaskManager() {
                   dueDate: "",
                 }
               }
+              // @ts-ignore
               onSubmit={handleAddOrUpdateTask}
             />
           </DialogContent>

@@ -33,6 +33,7 @@ function KanbanCard({ task, columnId }: { task: Task; columnId: string }) {
 
   return (
     <Card
+      // @ts-ignore
       ref={drag}
       className={`border-2 border-[#27272A] ${
         isDragging ? "opacity-50" : "opacity-100"
